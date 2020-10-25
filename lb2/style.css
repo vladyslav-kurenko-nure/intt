@@ -1,0 +1,50 @@
+#spech1 {
+  color: blue;
+  font-family: times;
+  position: absolute;
+  top: 5px;
+  left: 15px;
+}
+.mes1 {
+  font-size: 200%;
+}
+.warn {
+  position: relative;
+  left: 15px;
+  top: 5px;
+  color: red;
+  margin: 20px;
+  border-style: solid;
+}
+#demfloat {
+  float: left;
+  background: yellow;
+  padding: 50px;
+  margin: 10px;
+}
+
+.acc {
+  margin-bottom: 2px;
+  width: 100%;
+  color: white;
+  overflow: hidden;
+}
+.acc input {
+  display: none;
+}
+.acc label {
+  display: block;
+  padding: 1px;
+  background: black;
+}
+.acc-text {
+  max-height: 0px;
+  background: gray;
+  color: black;
+  -webkit-transition: max-height 0.9s;
+  -o-transition: max-height 0.9s;
+  transition: max-height 0.9s;
+}
+.acc input:checked ~ .acc-text {
+  max-height: 100vh;
+}
