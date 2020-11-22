@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang=ru>
+  <head>
+    <meta charset="utf-8">
+    <title>ЛБ 3</title>
+
+      <script type="text/javascript">
+        var rez;
+        var m_studentname = [];
+        var m_levels = [];
+        var grades = [];
+        var table = [[]];
+
+        function enterButtonClick()
+        {
+          var str1 = document.getElementById("textname").value;
+          m_studentname.push(str1);
+
+          var str2 = document.getElementById("textmas").value;
+          grades.length=0;
+          for (var i = 0; i < 5; i++)
+          {
+            grades.push(3);
+          }
+          for(var i = 0; i < str2.length; i++)
+          {
+            if(!isNaN(parseInt(str2.charAt(i))) && str2.charAt(i)!=" " && (1*str2.charAt(i))<=5 && (1*str2.charAt(i))>=1)
+            {
+              grades.shift();
+              grades.push(1*str2.charAt(i));
+            }
+          }
+
+          if (table[m_studentname.length] == undefined) table[m_studentname.length] = [];
+          for (var i = 0; i < 5; i++)
+          {
+            table[m_studentname.length-1][i]=grades[i];
+          }
+          //console.log(table);
+          //generate();
+        }
+
+        function okButtonClick()
+        {
+          console.clear();
+          var otl = false;
+          var hor = false;
+          var dvo = false;
+
+          for (var i = 0; i < m_studentname.length; i++)
+          {
+            console.log(table[i]);
+            for (var j = 0; j < 5; j++)
+            {
+              var h4=false; var h5=false; var c4=false; var c5=false;
+
+              otl=true;
+              if(table[i][j]<5)
+              {
+                otl=false;
+                break;
+              }
+            }
+            hor=false;
+            for (var j = 0; j < 5; j++)
+            {
+              h4=false;
+              h5=false;
+
+              if(table[i][j]==4 && c4==false)
+                {
+                  h4=true;
+                  c4=true;
+                }
+              if(table[i][j]==5 && c5==false)
+                {
+                  h5=true;
+                  c5=true;
+                }
+
+              if(c4==true && c5==true)
+                {
+                  hor=true;
+                  break;
+                }
+              }
+            dvo=false;
+            for (var j = 0; j < 5; j++)
+            {
+                  if(table[i][j]==2)
+                  {
+                    dvo=true;
+                    hor=false;
+                    otl=false;
+                    break;
+                  }
+              }
+            console.log(otl + " " + hor + " " + dvo);
+            if (otl==true) m_levels[i]=5;
+            else if (hor==true) m_levels[i]=4;
+            else if (dvo==true) m_levels[i]=2;
+            else if (otl==false && hor==false && dvo==false) m_levels[i]=-1;
+          }//for
+          console.log("");
+          console.log(m_levels);
+          console.log(m_studentname);
+
+          rez="<b>Результат:</b>";
+          rez+="<br>Отличники: ";
+          for (var i = 0; i < m_studentname.length; i++)
+          {
+            if(m_levels[i]==5) rez+=m_studentname[i]+" ";
+          }
+          rez+="<br>Хорошисты: ";
+          for (var i = 0; i < m_studentname.length; i++)
+          {
+            if(m_levels[i]==4) rez+=m_studentname[i]+" ";
+          }
+          rez+="<br>Двоечники: ";
+          for (var i = 0; i < m_studentname.length; i++)
+          {
+            if(m_levels[i]==2) rez+=m_studentname[i]+" ";
+          }
+          rez+="<br>Остальные: ";
+          for (var i = 0; i < m_studentname.length; i++)
+          {
+            if(m_levels[i]==-1) rez+=m_studentname[i]+" ";
+          }
+          document.getElementById("divrez").innerHTML=rez;
+        }//okButtonClick
+
+        function generate()
+        {
+          document.getElementById("textmas").value="";
+          for (var i = 0; i < 5; i++)
+          {
+           grades[i]=Math.floor(Math.random() * (5 - 1)) + 1;
+           document.getElementById("textmas").value+=grades[i]+" ";
+          }
+        }
+      </script>
+  </head>
+
+  <body>
+    <h4 style="font-size: 110%">Вариант 6</h4>
+    <h4>КІУКІ-18-3</h4>
+    <h4>Куренко Владислав</h4>
+
+    <div id="divform" style="border-style:double; margin:10pt; padding:10pt; width:400px">
+      <form action="index.html" method="post">
+        <b>Введите фамилию студента: </b>
+        <input type="text" id="textname" value="Student">
+        <br> <br>
+        <b>Введите 5 его оценок: </b>
+        <input type="text" id="textmas" value="4 5 4 5 5">
+        <br> <br>
+        <input type="button" id="enterbutton" value=" Добавить " onclick="enterButtonClick()">
+      </form>
+    </div>
+  <input type="button" id="okbutton" value=" Результат " style="margin-left: 10pt" onclick="okButtonClick()">
+  <div id="divrez" style="border-style:double; margin:10pt; padding:10pt; width:400px"></div>
+
+    <br>
+    <a href="../index.html"> На главную </a>
+  </body>
+</html>
