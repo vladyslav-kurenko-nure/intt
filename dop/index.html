@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <title>Игра Жизнь</title>
+
+    <style>
+    #field {
+      border: 3px solid black;
+      margin: 5px;
+      padding: 5px;
+      white-space: pre;
+      position: absolute;
+    }
+    #set {
+      margin: 5px;
+      padding: 5px;
+    }
+    #contr {
+      margin: 5px;
+      padding: 5px;
+    }
+    input[type=button] {
+      margin: 5px;
+    }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    let sx = 0, sy = 0;
+    let x = 0, y = 0, z = 0;
+    let t = new Array();
+    let g = new Array();
+    let kraz = 0, kzap = 0, inter = 0;
+    let out='';
+
+    function SyncMas()
+    {
+      for (y = 0; y < sy; y++)
+      {
+        for (x = 0; x < sx; x++)
+        {
+          t[x][y] = g[x][y];
+        }
+      }
+    }
+
+    function InitField()
+    {
+    	for (x = 0; x < sx; x++)
+    	{
+        t.push([]);
+        t[x].push(new Array(sx));
+    		for (y = 0; y < sy; y++) t[x][y] = 0;
+    	}
+    	for (x = 0; x < sx; x++)
+    	{
+        g.push([]);
+        g[x].push(new Array(sx));
+    		for (y = 0; y < sy; y++) g[x][y] = 0;
+    	}
+
+      Generate();
+    }
+
+    function OutField()
+    {
+      out='';
+    	for (y = 0; y < sy; y++)
+    	{
+    		for (x = 0; x < sx; x++)
+    		{
+          if (g[x][y] == 0) out+=' ';
+          else if (g[x][y] == 1) out+='O';
+    		}
+    		out += "\n";
+    	}
+      $('#field').text(out);
+    }
+
+    function Generate()
+    {
+      for (y = 0; y < sy; y++)
+      {
+        for (x = 0; x < sx; x++)
+        {
+          if (Math.floor(Math.random() * (61)) < kzap * 10 ) g[x][y] = 0;
+          else g[x][y]=Math.floor(Math.random() * (2));
+        }
+      }
+      SyncMas();
+    }
+
+    function Next()
+    {
+    	for (y = 1; y < sy - 1; y++)
+    	{
+    		for (x = 1; x < sx - 1; x++)
+    		{
+    			if (t[x - 1][y - 1] > 0) z++;
+    			if (t[x][y - 1] > 0) z++;
+    			if (t[x + 1][y - 1] > 0) z++;
+    			if (t[x - 1][y] > 0) z++;
+    			if (t[x + 1][y] > 0) z++;
+    			if (t[x - 1][y + 1] > 0) z++;
+    			if (t[x][y + 1] > 0) z++;
+    			if (t[x + 1][y + 1] > 0) z++;
+
+    			if (t[x][y] == 0)
+    			{
+    				if (z == 3) g[x][y] = 1;
+    			}
+    			else if (t[x][y] > 0)
+    			{
+    				if ((z == 2) || (z == 3))
+    				{
+    					g[x][y] = 1;
+    				}
+    				else
+    				{
+    					g[x][y] = 0;
+    				}
+    			}
+          z = 0;
+    		}
+    	}
+      SyncMas();
+    }
+
+    let intervalID;
+
+    function startbutton_Click()
+    {
+      intervalID = setInterval(function() { Next(); OutField(); }, inter);
+    }
+    function nextbutton_Click()
+    {
+      stopbutton_Click();
+      Next();
+      OutField();
+    }
+    function stopbutton_Click()
+    {
+      clearInterval(intervalID);
+    }
+    function kraztext_Change()
+    {
+      kraz = $('#kraztext').val();
+      sx = kraz * 5;
+      sy = kraz;
+      InitField();
+      OutField();
+      stopbutton_Click()
+
+      if (kraz >= 100) $('#field').css("font-size", "2pt");
+      else if (kraz >= 50) $('#field').css("font-size", "4pt");
+      else if (kraz >= 20) $('#field').css("font-size", "6pt");
+    }
+    function kzaptext_Change()
+    {
+      kzap = $('#kzaptext').val();
+      InitField();
+      OutField();
+      stopbutton_Click();
+    }
+    function intertext_Change()
+    {
+      inter = $('#intertext').val();
+      stopbutton_Click()
+    }
+    </script>
+  </head>
+
+  <body>
+    <div class="set">
+      Коеф. размера поля
+      <input type="number" id="kraztext" title="" min="20" max="150" step="5" value="25" onchange="kraztext_Change()">
+      Коеф. заполения
+      <input type="number" id="kzaptext" title="" min="2" max="5" step="1" value="2" onchange="kzaptext_Change()">
+      Интервал обновления
+      <input type="number" id="intertext" title="" min="10" max="10000" step="10" value="100" onchange="intertext_Change()">
+    </div>
+    <div id="contr">
+      <br>Вручную:
+      <input type="button" name="nextbutton" value="-->" onclick="nextbutton_Click()">
+      <br>Авторежим:
+      <input type="button" name="autobutton" value="Старт" onclick="startbutton_Click()">
+      <input type="button" name="stopbutton" value="Стоп" onclick="stopbutton_Click()">
+    </div>
+    <div id="field"></div>
+    <script type="text/javascript">
+      kraztext_Change();
+      kzaptext_Change();
+      intertext_Change();
+    </script>
+  </body>
+</html>
