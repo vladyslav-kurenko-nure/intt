@@ -1,0 +1,35 @@
+C:\Users\Я>cd C:\xampp\mongodb-win32-x86_64-2008plus-ssl-3.6.23/bin
+
+C:\xampp\mongodb-win32-x86_64-2008plus-ssl-3.6.23\bin>mongod --dbpath C:\xampp\mongodb-win32-x86_64-2008plus-ssl-3.6.23/bin/data
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+C:\Users\Я>cd C:\xampp\mongodb-win32-x86_64-2008plus-ssl-3.6.23/bin
+
+C:\xampp\mongodb-win32-x86_64-2008plus-ssl-3.6.23\bin>mongo
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+> use itehlb2v6
+switched to db itehlb2v6
+> db
+itehlb2v6
+> show collections
+> db.createCollection('cars')
+{ "ok" : 1 }
+> db.createCollection('rent')
+{ "ok" : 1 }
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+db.cars.save({name:"Car1", releasedate:2000, race:1500, state:"old"})
+db.cars.save({name:"Car2", releasedate:2005, race:1000, state:"old"})
+db.cars.save({name:"Car3", releasedate:2010, race:500, state:"old"})
+db.cars.save({name:"Car4", releasedate:2015, race:200, state:"old"})
+db.cars.save({name:"Car5", releasedate:2021, race:0, state:"new"})
+
+
+db.rent.save({name:"Car1", cost:100, dtstart:1610272800, dtend:1611136800})
+db.rent.save({name:"Car2", cost:100, dtstart:1613815200, dtend:1614250800})
+db.rent.save({name:"Car3", cost:120, dtstart:1614589200, dtend:1615374000})
+db.rent.save({name:"Car5", cost:500, dtstart:1615374000, dtend:1616968800})
